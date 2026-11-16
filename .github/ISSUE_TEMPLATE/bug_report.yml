@@ -1,0 +1,41 @@
+name: Báo lỗi / Bug report
+description: App không chạy đúng / Something does not work
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cảm ơn bạn đã báo lỗi! **Không dán mật khẩu, mã 2FA hay passphrase vào đây.**
+        Thanks for the report! **Never paste your password, 2FA code or keychain passphrase.**
+  - type: textarea
+    id: what
+    attributes:
+      label: Chuyện gì xảy ra? / What happened?
+      description: Các bước bạn đã làm và kết quả nhận được.
+    validations:
+      required: true
+  - type: input
+    id: gui
+    attributes:
+      label: Phiên bản IPA Tool GUI
+      description: Settings → About / Cài đặt → Giới thiệu
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: ipatool
+    attributes:
+      label: Phiên bản ipatool
+      description: Bottom-left corner / Góc dưới bên trái
+      placeholder: "2.8.1"
+  - type: input
+    id: windows
+    attributes:
+      label: Windows
+      placeholder: "Windows 11 24H2 x64"
+  - type: textarea
+    id: log
+    attributes:
+      label: Nhật ký / Log
+      description: Mở tab **Nhật ký** → **Sao chép**, rồi dán vào đây. Có thể xóa email Apple ID trước khi gửi.
+      render: text

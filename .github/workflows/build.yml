@@ -1,0 +1,52 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write      # create releases
+  id-token: write      # build provenance attestation
+  attestations: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: pwsh
+        run: |
+          $version = ""
+          if ($env:GITHUB_REF -like "refs/tags/v*") { $version = $env:GITHUB_REF_NAME.TrimStart("v") }
+          ./build.ps1 -Version $version
+
+      - name: Upload exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: IpaToolGui
+          path: |
+            dist/IpaToolGui.exe
+            dist/IpaToolGui.exe.sha256
+
+      # Lets users verify the exe was built by this workflow:
+      #   gh attestation verify IpaToolGui.exe --repo DuyTaDinh/ipatool-gui
+      - name: Attest build provenance (tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/IpaToolGui.exe
+
+      - name: Publish release (tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$env:GITHUB_REF_NAME" dist/IpaToolGui.exe dist/IpaToolGui.exe.sha256
+          --title "IPA Tool GUI $env:GITHUB_REF_NAME"
+          --notes-file docs/release-notes.md

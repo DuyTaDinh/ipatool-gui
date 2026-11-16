@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Lỗi của chính ipatool (đăng nhập Apple, tải IPA)
+    url: https://github.com/majd/ipatool/issues
+    about: Nếu chạy ipatool bằng dòng lệnh cũng bị lỗi tương tự, hãy báo ở dự án gốc.
+  - name: Báo lỗ hổng bảo mật
+    url: https://github.com/DuyTaDinh/ipatool-gui/security/advisories/new
+    about: Vui lòng báo riêng tư, không mở issue công khai.
